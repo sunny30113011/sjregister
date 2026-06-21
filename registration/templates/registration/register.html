@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SJ Tech Classes - Registration Portal</title>
+    <link rel="stylesheet" href="{% static 'registration/style.css' %}">
+</head>
+<body>
+    <!-- Decorative background elements -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                SJ Tech<span class="navbar-brand-dot"></span>
+            </a>
+            <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="navbar-links" id="navbarLinks">
+                <li><a href="#" class="navbar-link">Home</a></li>
+                <li><a href="#registrationForm" class="navbar-link">Register</a></li>
+                <li><a href="/admin/" target="_blank" class="navbar-link navbar-btn">Admin Portal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper (centers content between navbar and footer) -->
+    <div class="page-wrapper">
+        <div class="container">
+            <header>
+                <h1>SJ Tech Classes</h1>
+                <p>Empower your future with next-gen technical training. Register below to secure your seat.</p>
+            </header>
+            <!-- Step Progress Indicator -->
+            <div class="step-indicator-wrapper">
+                <div class="step-indicator">
+                    <div class="step active">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Personal Details</div>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Fees Payment</div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="form-card">
+                <form id="registrationForm" method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="form-group full-width" style="margin-bottom: 1.5rem;">
+                            <ul class="errorlist">
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <div class="form-grid">
+                        <!-- Full Name -->
+                        <div class="form-group {% if form.full_name.errors %}has-error{% endif %}">
+                            <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+                            {{ form.full_name }}
+                            {% if form.full_name.errors %}
+                                {{ form.full_name.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+                            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                {{ form.email.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="form-group {% if form.phone_number.errors %}has-error{% endif %}">
+                            <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
+                            {{ form.phone_number }}
+                            {% if form.phone_number.errors %}
+                                {{ form.phone_number.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="form-group {% if form.date_of_birth.errors %}has-error{% endif %}">
+                            <label for="{{ form.date_of_birth.id_for_label }}">{{ form.date_of_birth.label }}</label>
+                            {{ form.date_of_birth }}
+                            {% if form.date_of_birth.errors %}
+                                {{ form.date_of_birth.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Educational Qualification -->
+                        <div class="form-group {% if form.education.errors %}has-error{% endif %}">
+                            <label for="{{ form.education.id_for_label }}">{{ form.education.label }}</label>
+                            {{ form.education }}
+                            {% if form.education.errors %}
+                                {{ form.education.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Programming Experience -->
+                        <div class="form-group {% if form.experience_level.errors %}has-error{% endif %}">
+                            <label for="{{ form.experience_level.id_for_label }}">{{ form.experience_level.label }}</label>
+                            {{ form.experience_level }}
+                            {% if form.experience_level.errors %}
+                                {{ form.experience_level.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Chosen Course -->
+                        <div class="form-group {% if form.course.errors %}has-error{% endif %}">
+                            <label for="{{ form.course.id_for_label }}">{{ form.course.label }}</label>
+                            {{ form.course }}
+                            {% if form.course.errors %}
+                                {{ form.course.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Preferred Batch -->
+                        <div class="form-group {% if form.batch.errors %}has-error{% endif %}">
+                            <label for="{{ form.batch.id_for_label }}">{{ form.batch.label }}</label>
+                            {{ form.batch }}
+                            {% if form.batch.errors %}
+                                {{ form.batch.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Profile Picture Upload -->
+                        <div class="form-group full-width {% if form.profile_picture.errors %}has-error{% endif %}">
+                            <label>{{ form.profile_picture.label }}</label>
+                            <div class="file-upload-wrapper" id="uploadWrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <span class="file-upload-text" id="uploadText">Drag and drop your photo, or click to browse</span>
+                                <span class="file-upload-subtext">JPG, PNG or GIF. Max 5MB.</span>
+                                {{ form.profile_picture }}
+                            </div>
+                            <div class="image-preview-container" id="previewContainer">
+                                <img id="imagePreview" src="" alt="Profile Preview">
+                            </div>
+                            {% if form.profile_picture.errors %}
+                                {{ form.profile_picture.errors }}
+                            {% endif %}
+                        </div>
+
+                        <!-- Learning Goals -->
+                        <div class="form-group full-width {% if form.comments.errors %}has-error{% endif %}">
+                            <label for="{{ form.comments.id_for_label }}">{{ form.comments.label }}</label>
+                            {{ form.comments }}
+                            {% if form.comments.errors %}
+                                {{ form.comments.errors }}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" class="btn-submit">Submit Registration</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>SJ Tech Classes</h3>
+                <p>Leading provider of premium coding bootcamps and advanced tech courses. We build industry-ready developers, designers, and engineers through hands-on practice and real-world projects.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Courses</h3>
+                <ul>
+                    <li><a href="#">Full Stack Web</a></li>
+                    <li><a href="#">Python & Django</a></li>
+                    <li><a href="#">Data Science & AI</a></li>
+                    <li><a href="#">Cybersecurity</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="/admin/" target="_blank">Staff Login</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">&copy; 2026 SJ Tech Classes. All rights reserved.</span>
+            <div class="footer-contact">
+                <span>Email: support@sjtechclasses.com</span>
+                <span>Phone: +1 800-555-0199</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal Overlay Removed (Moved to step 2 payment flow) -->
+
+    <script>
+        // Custom File Upload styling & Image preview script
+        const fileInput = document.querySelector('.form-file-input');
+        const uploadWrapper = document.getElementById('uploadWrapper');
+        const uploadText = document.getElementById('uploadText');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Update text to filename
+                    uploadText.textContent = `Selected: ${file.name}`;
+                    
+                    // Show image preview if it's an image
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            imagePreview.src = event.target.result;
+                            previewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewContainer.style.display = 'none';
+                    }
+                } else {
+                    uploadText.textContent = "Drag and drop your photo, or click to browse";
+                    previewContainer.style.display = 'none';
+                }
+            });
+
+            // Highlight drag area on hover
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadWrapper.addEventListener(eventName, highlight, false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadWrapper.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                uploadWrapper.style.borderColor = 'var(--glass-focus-border)';
+                uploadWrapper.style.background = 'rgba(255, 255, 255, 0.03)';
+            }
+
+            function unhighlight(e) {
+                uploadWrapper.style.borderColor = 'var(--glass-border)';
+                uploadWrapper.style.background = 'rgba(255, 255, 255, 0.01)';
+            }
+        }
+
+        // Modal logic removed
+
+        // Mobile Navbar Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navbarLinks = document.getElementById('navbarLinks');
+        if (mobileMenuBtn && navbarLinks) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navbarLinks.classList.toggle('active');
+                mobileMenuBtn.classList.toggle('open');
+            });
+        }
+    </script>
+</body>
+</html>

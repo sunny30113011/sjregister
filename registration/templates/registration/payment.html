@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SJ Tech Classes - Admission Payment</title>
+    <link rel="stylesheet" href="{% static 'registration/style.css' %}">
+</head>
+<body>
+    <!-- Decorative background elements -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                SJ Tech<span class="navbar-brand-dot"></span>
+            </a>
+            <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="navbar-links" id="navbarLinks">
+                <li><a href="/" class="navbar-link">Home</a></li>
+                <li><a href="/admin/" target="_blank" class="navbar-link navbar-btn">Admin Portal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+        <div class="container">
+            <header>
+                <h1>Secure Registration Payment</h1>
+                <p>Complete your registration by scanning the QR code and uploading the payment proof.</p>
+            </header>
+
+            <!-- Step Progress Indicator -->
+            <div class="step-indicator-wrapper">
+                <div class="step-indicator">
+                    <div class="step completed">
+                        <div class="step-number">✓</div>
+                        <div class="step-label">Personal Details</div>
+                    </div>
+                    <div class="step-line completed"></div>
+                    <div class="step active">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Fees Payment</div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="form-card">
+                <div class="payment-layout">
+                    <!-- Left: QR Code and Instructions -->
+                    <div class="payment-info">
+                        <h3>Registration Details</h3>
+                        <div class="student-summary">
+                            <div class="summary-row">
+                                <span class="summary-label">Candidate Name:</span>
+                                <span class="summary-value">{{ student.full_name }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Email Address:</span>
+                                <span class="summary-value">{{ student.email }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Selected Course:</span>
+                                <span class="summary-value">{{ student.get_course_display }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Registration ID:</span>
+                                <span class="summary-value">#SJ-{{ student.id|stringformat:"04d" }}</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-steps">
+                            <h4>How to complete payment:</h4>
+                            <ol>
+                                <li>Scan the QR code shown here using <strong>PhonePe, Google Pay, Paytm, or any UPI app</strong>.</li>
+                                <li>Complete the transaction on your mobile device.</li>
+                                <li>Take a screenshot of the successful payment confirmation screen.</li>
+                                <li>Upload that screenshot using the uploader form on the right and click submit.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Middle/Right: QR Code Visual and Upload form -->
+                    <div class="payment-action-box">
+                        <div class="qr-scanner-card">
+                            <div class="qr-container">
+                                <img src="{% static 'registration/qr_code.jpg' %}" alt="PhonePe QR Code" class="qr-image">
+                                <div class="scan-laser"></div>
+                            </div>
+                            <div class="qr-details">
+                                <span class="upi-id">UPI ID: <strong></strong></span>
+                                <span class="upi-apps-icons">Accepting PhonePe, GPay, Paytm, BHIM</span>
+                            </div>
+                        </div>
+
+                        <form id="paymentForm" method="POST" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
+                            
+                            {% if form.payment_screenshot.errors %}
+                                <div class="form-group has-error" style="margin-bottom: 1rem;">
+                                    {{ form.payment_screenshot.errors }}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group">
+                                <label for="{{ form.payment_screenshot.id_for_label }}">Upload Payment Screenshot</label>
+                                <div class="file-upload-wrapper" id="uploadWrapper">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                                    <span class="file-upload-text" id="uploadText">Drag and drop your screenshot here, or click to browse</span>
+                                    <span class="file-upload-subtext">JPG, PNG. Max 5MB. Must show Transaction ID/UTR.</span>
+                                    {{ form.payment_screenshot }}
+                                </div>
+                                <div class="image-preview-container" id="previewContainer">
+                                    <img id="imagePreview" src="" alt="Payment Screenshot Preview">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-submit btn-payment-submit">Submit Payment Proof</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>SJ Tech Classes</h3>
+                <p>Leading provider of premium coding bootcamps and advanced tech courses. We build industry-ready developers, designers, and engineers through hands-on practice and real-world projects.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Courses</h3>
+                <ul>
+                    <li><a href="#">Full Stack Web</a></li>
+                    <li><a href="#">Python & Django</a></li>
+                    <li><a href="#">Data Science & AI</a></li>
+                    <li><a href="#">Cybersecurity</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="/admin/" target="_blank">Staff Login</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">&copy; 2026 SJ Tech Classes. All rights reserved.</span>
+            <div class="footer-contact">
+                <span>Email: support@sjtechclasses.com</span>
+                <span>Phone: +1 800-555-0199</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Custom File Upload styling & Image preview script
+        const fileInput = document.querySelector('.form-file-input');
+        const uploadWrapper = document.getElementById('uploadWrapper');
+        const uploadText = document.getElementById('uploadText');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    uploadText.textContent = `Selected: ${file.name}`;
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            imagePreview.src = event.target.result;
+                            previewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewContainer.style.display = 'none';
+                    }
+                } else {
+                    uploadText.textContent = "Drag and drop your screenshot here, or click to browse";
+                    previewContainer.style.display = 'none';
+                }
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadWrapper.addEventListener(eventName, highlight, false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadWrapper.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                uploadWrapper.style.borderColor = 'var(--glass-focus-border)';
+                uploadWrapper.style.background = 'rgba(255, 255, 255, 0.03)';
+            }
+
+            function unhighlight(e) {
+                uploadWrapper.style.borderColor = 'var(--glass-border)';
+                uploadWrapper.style.background = 'rgba(255, 255, 255, 0.01)';
+            }
+        }
+
+        // Mobile Navbar Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navbarLinks = document.getElementById('navbarLinks');
+        if (mobileMenuBtn && navbarLinks) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navbarLinks.classList.toggle('active');
+                mobileMenuBtn.classList.toggle('open');
+            });
+        }
+    </script>
+</body>
+</html>

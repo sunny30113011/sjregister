@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: sj-tech-classes
+    runtime: python
+    buildCommand: ./build.sh
+    startCommand: gunicorn sj_tech_project.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.7
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: .onrender.com localhost 127.0.0.1

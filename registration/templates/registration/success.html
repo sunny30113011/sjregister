@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SJ Tech Classes - Registration Successful</title>
+    <link rel="stylesheet" href="{% static 'registration/style.css' %}">
+</head>
+<body>
+    <!-- Decorative background elements -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-brand">
+                SJ Tech<span class="navbar-brand-dot"></span>
+            </a>
+            <button class="menu-toggle" id="mobileMenuBtn" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="navbar-links" id="navbarLinks">
+                <li><a href="/" class="navbar-link">Home</a></li>
+                <li><a href="/admin/" target="_blank" class="navbar-link navbar-btn">Admin Portal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+        <div class="container" style="max-width: 650px;">
+            <!-- Step Progress Indicator -->
+            <div class="step-indicator-wrapper" style="margin-bottom: 2rem;">
+                <div class="step-indicator">
+                    <div class="step completed">
+                        <div class="step-number">✓</div>
+                        <div class="step-label">Personal Details</div>
+                    </div>
+                    <div class="step-line completed"></div>
+                    <div class="step completed">
+                        <div class="step-number">✓</div>
+                        <div class="step-label">Fees Payment</div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="form-card success-card" style="text-align: center;">
+                <div class="success-checkmark-wrapper">
+                    <div class="success-checkmark-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                </div>
+
+                <h2>Registration Submitted!</h2>
+                <p class="success-intro">Welcome to SJ Tech, <strong>{{ student.full_name }}</strong>! We have received your registration details and payment screenshot.</p>
+
+                <div class="registration-details-card">
+                    <h3>Summary of Registration</h3>
+                    <div class="details-grid">
+                        <div class="details-row">
+                            <span class="details-label">Registration ID:</span>
+                            <span class="details-value font-mono">#SJ-{{ student.id|stringformat:"04d" }}</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Selected Course:</span>
+                            <span class="details-value">{{ student.get_course_display }}</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Preferred Batch:</span>
+                            <span class="details-value">{{ student.get_batch_display }}</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Payment Status:</span>
+                            <span class="details-value status-badge status-{{ student.payment_status }}">
+                                {{ student.get_payment_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-notice">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="notice-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p>Our administration team is currently reviewing your payment screenshot. Once verified, you will receive a confirmation email and SMS containing your batch schedule, orientation links, and student portal credentials.</p>
+                </div>
+
+                <div class="success-footer">
+                    <a href="/" class="btn-submit btn-success-home" style="text-decoration: none; display: inline-block;">Register Another Student</a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <h3>SJ Tech Classes</h3>
+                <p>Leading provider of premium coding bootcamps and advanced tech courses. We build industry-ready developers, designers, and engineers through hands-on practice and real-world projects.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Courses</h3>
+                <ul>
+                    <li><a href="#">Full Stack Web</a></li>
+                    <li><a href="#">Python & Django</a></li>
+                    <li><a href="#">Data Science & AI</a></li>
+                    <li><a href="#">Cybersecurity</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="/admin/" target="_blank">Staff Login</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span class="footer-copy">&copy; 2026 SJ Tech Classes. All rights reserved.</span>
+            <div class="footer-contact">
+                <span>Email: support@sjtechclasses.com</span>
+                <span>Phone: +1 800-555-0199</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navbar Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navbarLinks = document.getElementById('navbarLinks');
+        if (mobileMenuBtn && navbarLinks) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navbarLinks.classList.toggle('active');
+                mobileMenuBtn.classList.toggle('open');
+            });
+        }
+    </script>
+</body>
+</html>
